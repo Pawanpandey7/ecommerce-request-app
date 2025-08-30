@@ -7,16 +7,28 @@ export default function Navbar({ cartCount, user, onLogout }) {
       <div className="nav-inner container">
         <Link to="/" className="brand">E-Request</Link>
         <nav className="links">
-          <Link to="/cart">Cart ({cartCount})</Link>
-          {!user ? (
+          {user ? (
             <>
-              <Link to="/register">Register</Link>
-              <Link to="/login">Login</Link>
+              <span className="greet">Hi, {user.name}</span>
+
+              {/* Show Cart only for buyers */}
+              {user.role === "customer" && (
+                <Link to="/cart">Cart ({cartCount})</Link>
+              )}
+
+              {/* Show Add Product only for sellers */}
+              {user.role === "seller" && (
+                <Link to="/add-product" className="btn">
+                  Add Product
+                </Link>
+              )}
+
+              <button onClick={onLogout} className="btn-link">Logout</button>
             </>
           ) : (
             <>
-              <span className="greet">Hi, {user.name}</span>
-              <button onClick={onLogout} className="btn-link">Logout</button>
+              <Link to="/register">Register</Link>
+              <Link to="/login">Login</Link>
             </>
           )}
         </nav>
